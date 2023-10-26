@@ -1,0 +1,6 @@
+#!/bin/bash
+
+/usr/bin/php -f /home/worker/event_handlers/run.php PrevHandlerSwitch unbind ONCRMCOMPANYUPDATE
+
+/usr/bin/php -f /home/worker/event_handlers/run.php AnyEventSwitcher bind ONCRMCOMPANYUPDATE
+
