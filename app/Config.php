@@ -35,7 +35,7 @@ class Config
     private SQLite3 $dataBase;
 
     private array $conf = [
-        'version' => '0.2.0',
+        'version' => '0.2.1',
         'comment' => '',
         'log_file' => '??', // auto init
         'log_limit' => 90, // log files count limit

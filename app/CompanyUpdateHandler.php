@@ -30,18 +30,19 @@ class CompanyUpdateHandler extends AbstractApp
         $scopes = explode(',', $requestSscope);
         if (!in_array('crm', $scopes)) {
             $this->logger->log("Неверный scope ($requestSscope)", Config::ERROR);
-            $this->logAndDie();
+//            $this->logAndDie();
         }
         $userId = $_REQUEST["auth"]["user_id"] ?? 0;
         if (!$userId) {
             $this->logger->log('Нет ID пользователя', Config::ERROR);
             $this->logAndDie();
         }
+        $this->appName .= " User=$userId";
     }
 
     private function logAndDie(): void
     {
-        $this->logger->log('$_REQUEST = ' . var_export($_REQUEST, 1));
+//        $this->logger->log('$_REQUEST = ' . var_export($_REQUEST, 1));
         die();
     }
 
@@ -51,7 +52,7 @@ class CompanyUpdateHandler extends AbstractApp
             'crm.company.get',
             ['id' => $this->companyId]
         );
-        $this->logger->log('Company ' . $company['TITLE'] . ', ID=' . $company['ID']);
+        $this->logger->log('Компания: ' . $company['TITLE'] . ', ID=' . $company['ID']);
         $this->assignedById = $company['ASSIGNED_BY_ID'] ?? 0;
         $companyPrev = $this->base->query(
             'select assigned from companies where company = ' . $this->companyId
@@ -62,7 +63,7 @@ class CompanyUpdateHandler extends AbstractApp
         } else {
             $this->assignedByIdPrev = $companyPrev[0] ?? 0;
             if ($this->assignedByIdPrev === $this->assignedById) {
-                $this->logger->log('Не менялся');
+                $this->logger->log('Ответственный тот же ' . $this->assignedById);
                 return;
             }
         }
@@ -100,7 +101,7 @@ class CompanyUpdateHandler extends AbstractApp
                 'fields' => ['ASSIGNED_BY_ID' => $this->assignedById],
             ]
         );
-        $this->logger->log("Contact=$id, Ответственный $this->assignedByIdPrev -> $this->assignedById");
+        $this->logger->log("Контакт=$id, Ответственный $this->assignedByIdPrev -> $this->assignedById");
 //        $this->logger->log('$_REQUEST = ' . var_export($_REQUEST, 1));
     }
 }

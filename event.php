@@ -17,7 +17,7 @@ $class = [
     ] [$event] ?? 'TestEventApp';
 
 try {
-    Logger::instance()->log("--- Event=$event -> $class REMOTE=" . $_SERVER['REMOTE_ADDR']);
+    Logger::instance()->log("--- Event=$event -- $class REMOTE=" . $_SERVER['REMOTE_ADDR']);
     $app = eval("return new App\\$class();");
 } catch (Throwable $t) {
     Logger::instance()->log("!!!Fatal\n" . $t->getMessage());
